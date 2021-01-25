@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-study/七天用Go从零实现系列/gee-frame/day1-http-base/base3/geeb"
+	"go-study/7-days-golang/gee-frame/day1-http-base/base3/geeb"
 	"net/http"
 )
 
