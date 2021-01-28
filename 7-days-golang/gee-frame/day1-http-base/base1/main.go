@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// go内置 net/http库简单实用
+// go内置 net/http库简单使用
 
 func main() {
 	// 返回值
