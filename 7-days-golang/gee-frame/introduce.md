@@ -385,3 +385,100 @@ func (engine *Engine) LoadHTMLGlob(pattern string) {
 另外，给用户分别提供了设置自定义渲染函数funcMap和加载模板的方法。
 
 接下来，对原来的(*Context).HTML()方法做了写下修改，使之支持根据模板文件名选择模板进行渲染。
+
+```go
+type Context struct {
+    // ...
+	// engine pointer
+	engine *Engine
+}
+
+func (c *Context) HTML(code int, name string, data interface{}) {
+	c.SetHeader("Content-Type", "text/html")
+	c.Status(code)
+	if err := c.engine.htmlTemplates.ExecuteTemplate(c.Writer, name, data); err != nil {
+		c.Fail(500, err.Error())
+	}
+}
+```
+
+我们再Context中添加了成员变量engine *Engine，这样就能通过Context访问Engine中HTML模板。实例化Context时，还需要给c.engine赋值。
+
+```go
+func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	// ...
+	c := newContext(w, req)
+	c.handlers = middlewares
+	c.engine = engine
+	engine.router.handle(c)
+}
+```
+
+#### 使用Demo
+
+最终的目录结构
+
+```
+---gee/
+---static/
+   |---css/
+        |---geektutu.css
+   |---file1.txt
+---templates/
+   |---arr.tmpl
+   |---css.tmpl
+   |---custom_func.tmpl
+---main.go
+```
+
+```html
+<!-- day6-template/templates/css.tmpl -->
+<html>
+    <link rel="stylesheet" href="/assets/css/geektutu.css">
+    <p>geektutu.css is loaded</p>
+</html>
+```
+
+```go
+type student struct {
+	Name string
+	Age  int8
+}
+
+func FormatAsDate(t time.Time) string {
+	year, month, day := t.Date()
+	return fmt.Sprintf("%d-%02d-%02d", year, month, day)
+}
+
+func main() {
+	r := gee.New()
+	r.Use(gee.Logger())
+	r.SetFuncMap(template.FuncMap{
+		"FormatAsDate": FormatAsDate,
+	})
+	r.LoadHTMLGlob("templates/*")
+	r.Static("/assets", "./static")
+
+	stu1 := &student{Name: "Geektutu", Age: 20}
+	stu2 := &student{Name: "Jack", Age: 22}
+	r.GET("/", func(c *gee.Context) {
+		c.HTML(http.StatusOK, "css.tmpl", nil)
+	})
+	r.GET("/students", func(c *gee.Context) {
+		c.HTML(http.StatusOK, "arr.tmpl", gee.H{
+			"title":  "gee",
+			"stuArr": [2]*student{stu1, stu2},
+		})
+	})
+
+	r.GET("/date", func(c *gee.Context) {
+		c.HTML(http.StatusOK, "custom_func.tmpl", gee.H{
+			"title": "gee",
+			"now":   time.Date(2019, 8, 17, 0, 0, 0, 0, time.UTC),
+		})
+	})
+
+	r.Run(":9999")
+}
+```
+![img_2.png](img_2.png)
