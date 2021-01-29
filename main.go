@@ -18,9 +18,14 @@ func (d *Demo) test() {
 
 func main() {
 
-	fmt.Println(1 ^ 1)
-	fmt.Println(2 ^ 2)
-	//ui.Qoui_demo()
+	url :="http://10.24.113.117:8082/ctm01facebigpic/v1/pic/getPic?picUrl=aHR0cDovLzEzLjIyNS4yLjU2OjYxMjAvcGljPzJkZDk0NHo2OC09czk1OTE2ODg2MzY4MWUtPXQxaTdtKj1wMXA4aT1kMXMqaTdkMTQqOGQ2PSo0YjhpNTVjYzM5MDdhYzNkZTEtYTBiMzE3LTc1Mmk1NjkqZTZlN2kxNT0="
+	url2 :="http://10.24.113.117:8082/ctm01facebigpic/v1/pic/getPic?picUrl=aHR0cDovLzEzLjE3MS4xLjE3Nzo4MTAxL2Nkcy92MS9maWxlL2NvbW1vbio4NjMxMzg2NzdfOTQ2NTMvVmFzUmVhbFZpZGVvL1JlYWxWaWRlby1ZZEZCUTZDV2FxRFkvMjAyMS0wMS0yOC92YXNAUmVhbFZpZGVvLVlkRkJRNkNXYXFEWUA5OTk0OUAxNjExNzY4MDY1LmpwZz9kZXY9Y2R2c2VydmVyLTAxJmZpZD04MTk5OTMtMTI4LTQ3MDMyMDAwMTYtMzlCOUItMzlGNjY="
+	fmt.Println(len(url))
+	fmt.Println(len(url2))
+	//
+	//fmt.Println(1 ^ 1)
+	//fmt.Println(2 ^ 2)
+	////ui.Qoui_demo()
 	//readMp4()
 	//fmt.Println(time.Now().UnixNano() / 1e6)
 	//
