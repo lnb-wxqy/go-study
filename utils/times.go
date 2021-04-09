@@ -10,8 +10,10 @@ const (
 	defultTimeLayout     string = "2006-01-02 15:04:05"
 	DateFormatDefault    string = "2006-01-02 15:04:05"
 	DateFormatNoSpan     string = "20060102150405"
+	DateFormatYMD        string = "20060102"
 	DateFormatLongNoSpan string = "20060102150405000"
 	DateFormatEN         string = "2006/01/02 15:04:05"
+	DateFormatCNSSS      string = "2006-01-02 15:04:05.000"
 )
 
 var CstZone = time.FixedZone("CST", 8*3600)

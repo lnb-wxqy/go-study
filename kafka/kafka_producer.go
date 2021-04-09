@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Shopify/sarama"
-	"golang-study/utils"
+	"go-study/utils"
 	"sync"
 	"time"
 )
