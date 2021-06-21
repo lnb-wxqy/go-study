@@ -1,0 +1,43 @@
+{
+    "absTime": 1618951539681,
+    "accessTime": 1618951631053,
+    "businessId": "61040450001210000003",
+    "dataSource": "7",
+    "deviceId": "61040450001210000003",
+    "extMaps": {
+        "imageMiss": "0",
+        "info_source": "NETPOSA"
+    },
+    "infoKind": 1,
+    "infoSource": "NETPOSA",
+    "laneNo": 2,
+    "location": "0,0,0,0",
+    "plateClass": "2",
+    "plateColor": "5",
+    "plateLocation": "0,0,0,0",
+    "plateNo": "冀D2579F",
+    "recordId": "610404500012100000030220210421044711247170256250",
+    "sceneImg": "http://61.4.206.109:6551/DownLoadFile?filename=LOC:1975899227/data_BIG10003003/20210421/02/f914994e115c7d9260a4e88e259d5ff0_188499",
+    "source": 7,
+    "sourceId": "61040450001210000003022021042104471119600",
+    "subImageList": [
+        {
+            "eventSort": 12,
+            "imageId": "61040450001210000003022021042104471190689",
+            "imageType": 1,
+            "shotTime": 1618951631053,
+            "storagePath": "http://61.4.206.109:6551/DownLoadFile?filename=LOC:1975899227/data_BIG10003003/20210421/02/f914994e115c7d9260a4e88e259d5ff0_188499"
+        },
+        {
+            "eventSort": 12,
+            "imageId": "61040450001210000003022021042104471187246",
+            "imageType": 2,
+            "shotTime": 1618951631053,
+            "storagePath": "http://61.4.206.109:6551/DownLoadFile?filename=LOC:1975899227/data_SMALL10003003/20210421/00/d8c5b308b21d5bc9b28c5493324a9b9f_3896"
+        }
+    ],
+    "vehicleBrand": "999",
+    "vehicleColor": "99",
+    "vehicleType": "K33",
+    "violationType": "0"
+}
