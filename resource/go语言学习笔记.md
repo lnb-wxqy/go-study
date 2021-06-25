@@ -902,7 +902,7 @@ for [condition | ( init; condition; increment ) | Range] {
 
    - 运行结果
 
-     ![1623838543318](E:\lnb\go\src\go-study\resource\go语言学习笔记.assets\1623838543318.png)
+     ![1623993422802](E:\lnb\study\笔记\go语言学习笔记.assets\1623838543318.png)
 
    - 案例2：使用循环嵌套输出 2 到 100 间 的素数
 
@@ -1351,7 +1351,7 @@ func main(){
    - 一个指针变量可以指向任何一个值的内存地址。
    - 如下图：变量b的值 156 ，存储在内存中的地址为 0x1040a124。变量a持有b的地址，则a被认为指向b。
 
-![1623993422802](E:\lnb\go\src\go-study\resource\1623993422802.png)
+![1623993422802](E:\lnb\study\笔记\go语言学习笔记.assets\1623993422802.png)
 
 2. 获取变量的地址
 
@@ -1578,7 +1578,9 @@ func main() {
 
 1. 二维数组定义
 
+   ```go
    var arrayName[x][y] varaible_type
+   ```
 
    例：
 
@@ -1884,11 +1886,11 @@ numbers:	addr:0xc000096008 	 len=11 	 cap=19 	 slice=[2 3 4 5 6 7 200 300 400 50
    - 持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较
 2. 冒泡分析
 
-![1624011788049](E:\lnb\go\src\go-study\resource\1624011788049.png)
+![1624011788049](E:\lnb\study\笔记\go语言学习笔记.assets\1624011788049.png)
 
-![1624011797700](E:\lnb\go\src\go-study\resource\1624011797700.png)
+![1624011797700](E:\lnb\study\笔记\go语言学习笔记.assets\1624011797700.png)
 
-![1624011804632](E:\lnb\go\src\go-study\resource\1624011804632.png)
+![1624011804632](E:\lnb\study\笔记\go语言学习笔记.assets\1624011804632.png)
 
 3. 代码示例（核心代码）
 
@@ -1923,7 +1925,7 @@ func BubbleSort(arr []int) {
 }
 ```
 
-#### 十、map和list
+#### 十、map
 
 ##### （一）什么是map
 
@@ -1933,6 +1935,7 @@ func BubbleSort(arr []int) {
 ##### （二）map 的用法
 
 1. map声明 （两种方式）
+
    - var  var_name map[key_type]value_type
    - var_name = make(map[key_type]value_type)
 
@@ -2054,3 +2057,1262 @@ func main() {
 ##### （五）map是引用类型
 
 - 与切片相似，map是引用类型。当将map分配给一个新变量时，他们都指向相同的内部数据结果。因此，一个的变化会反映另一个。
+
+#### 十一、 结构体
+
+##### （一）定义结构体
+
+1. 什么是结构体
+
+   结构体是由一系列具有相同类型或不通类型的数据构成的数据集合。
+
+2. 结构体的定义格式
+
+   type 结构体名称 struct {
+
+   ​	element1 type1
+
+   ​	element2 type2
+
+   ​	element3 ,element4 type3
+
+   }
+
+   - 结构体名称：在同一包内不能重复
+   - element：结构体中的成员属性，也叫字段，必须唯一
+   - 同类型的成员属性可以写在一行
+
+   示例代码
+
+   ```go
+   // 定义一个结构体
+   type Teacher struct{
+       name string
+       age int8
+       sex byte
+   }
+   
+   ```
+
+##### （二） 实例化结构体—— 为结构体分配内存并初始化
+
+1. 声明方式实例化结构体，初始化方式为：对象.属性 = 值
+
+   ``` go
+   var t1 Teacher
+   t1.name = "Andy"
+   t1.age = 20
+   t1.sex = 1
+   ```
+
+2. 变量短声明格式实例化结构体，初始化方式为：对象.属性 = 值
+
+   ``` go
+   t2 :=Teacher{}
+   t2.name = "Cherry"
+   t2.age = 18
+   t2.sex = 0
+   ```
+
+3. 变量简短声明格式实例化结构体，声明时初始化。初始化方式为：属性:值
+
+   ```go
+   t3 :=Teacher{
+       name: "zyt",
+       age: 22,
+       sex: 0
+   }
+   ```
+
+4. 变量简短声明格式实例化，声明时初始化，不写属性名，按属性顺序只写属性值
+
+   ```go
+   t4 :=Teacher{"cy",24,0}
+   ```
+
+5. 创建指针类型的结构体
+
+   - 使用内置函数new() 对结构体进行实例化，结构体实例化后行程指针类型的结构体
+   - new 内置函数会分配内存。第一个参数是类型，而不是值，返回的值是指针向该类型新分配的零值的指针。
+
+   ```go
+   t5 :=new(Teacher)
+   (*t5).name = "ty"
+   (*t5).age = 26
+   t5.sex = 0 // 语法简写形式，语法糖
+   ```
+
+##### （三）结构体是值类型
+
+```go
+package main
+
+import "fmt"
+
+type Human struct {
+	name string
+	age  int8
+	sex  byte
+}
+
+func main() {
+	// 1. 初始化Human
+	h1 := Human{"zyt", 23, 0}
+	fmt.Printf("h1: %T,%v,%p\n", h1, h1, &h1)
+	fmt.Println("----------------------------")
+
+	// 2.将结构体对象进行拷贝
+	h2 := h1
+	h2.name = "cy"
+	h2.age = 20
+	fmt.Printf("h2修改后=%T,%v,%p\n", h2, h2, &h2)
+	fmt.Printf("h1: %T,%v,%p\n", h1, h1, &h1)
+	fmt.Println("----------------------------")
+
+	// 将结构体对象作为参数传递
+	changeName(h1)
+	fmt.Printf("h1: %T,%v,%p\n", h1, h1, &h1)
+	fmt.Println("----------------------------")
+
+}
+
+func changeName(h Human) {
+	h.name = "wxqy"
+	h.sex = 1
+	fmt.Printf("函数内h修改后=%T , %v , %p\n", h, h, &h)
+}
+
+// 运行结果
+h1: main.Human,{zyt 23 0},0xc0000044c0
+----------------------------
+h2修改后=main.Human,{cy 20 0},0xc000004540
+h1: main.Human,{zyt 23 0},0xc0000044c0
+----------------------------
+函数内h修改后=main.Human , {wxqy 23 1} , 0xc0000045e0
+h1: main.Human,{zyt 23 0},0xc0000044c0
+----------------------------
+```
+
+##### （四）结构体的深拷贝和浅拷贝
+
+- 值类型是深拷贝
+- 引用类型是浅拷贝
+
+1. 示例代码
+
+   ```go
+   package main
+   
+   import "fmt"
+   
+   type Dog struct {
+   	name  string
+   	color string
+   	age   int8
+   	kind  string // 品种
+   }
+   
+   func main() {
+   	// 1. 实现结构体的深拷贝
+   	// struct的数据类型：值类型，所以默认的复制就是深拷贝
+   	d1 := Dog{"豆豆", "black", 2, "二哈"}
+   	fmt.Printf("d1：%T , %v , %p \n", d1, d1, &d1) // main.Dog , {豆豆 black 2 二哈} , 0xc00003e080
+   
+   	d2 := d1  //深拷贝 dog
+   	fmt.Printf("d2：%T , %v , %p \n", d2, d2, &d2) // main.Dog , {豆豆 black 2 二哈} , 0xc000048100
+   
+   	// 修改 d2 ， d1 是否也发⽣生变化？
+   	d2.name = "毛毛"
+   	fmt.Println("d2修改后=", d2) // d2修改后= {毛毛 black 2 二哈}
+   	fmt.Println("d1=", d1)    // d1= {豆豆 black 2 二哈}
+   	fmt.Println("------------------------")
+   
+   	//2 、实现结构体的浅拷贝：直接拷贝指针地址实现浅拷贝
+   	d3 := &d1
+   	fmt.Printf("d3：%T , %v , %p \n", d3, d3, d3) // &{豆豆 black 2 二哈} , 0xc00003e080
+   	d3.kind = "萨摩耶"
+   	d3.color = "白色"
+   	d3.name = "球球"
+   	fmt.Println("d3修改后=", d3) // d3修改后= &{球球 白色 2 萨摩耶}
+   	fmt.Println("d1=", d1) //d1= {球球 白色 2 萨摩耶}
+   	fmt.Println("------------------------")
+   
+   	//3 、实现结构体的浅拷贝
+   	// 拷贝通过 new 函数实例例化的对象
+   	d4 := new(Dog) //*Dog
+   	d4.name = "多多"
+   	d4.color = "棕色"
+   	d4.age = 1
+   	d4.kind = "巴哥⽝犬"
+   	d5 := d4 //*Dog
+   	fmt.Printf("d4：%T , %v , %p \n", d4, d4, d4) // *main.Dog , &{多多 棕色 1 巴哥⽝犬} , 0xc00003e340
+   	fmt.Printf("d5：%T , %v , %p \n", d5, d5, d5) // *main.Dog , &{多多 棕色 1 巴哥⽝犬} , 0xc00003e340
+   
+   	// 修改 d5 ， d4 是否也发⽣生变化？
+   	d5.color = "金色"
+   	d5.kind = "金毛"
+   	fmt.Println("d5修改后=", d5) // d5修改后= &{多多 金色 1 金毛}
+   	fmt.Println("d4=", d4) //d4= &{多多 金色 1 金毛}
+   	fmt.Println("------------------------")
+   }
+   
+   // 输出结果
+   d1：main.Dog , {豆豆 black 2 二哈} , 0xc00003e080 
+   d2：main.Dog , {豆豆 black 2 二哈} , 0xc00003e140 
+   d2修改后= {毛毛 black 2 二哈}
+   d1= {豆豆 black 2 二哈}
+   ------------------------
+   d3：*main.Dog , &{豆豆 black 2 二哈} , 0xc00003e080 
+   d3修改后= &{球球 白色 2 萨摩耶}
+   d1= {球球 白色 2 萨摩耶}
+   ------------------------
+   d4：*main.Dog , &{多多 棕色 1 巴哥⽝犬} , 0xc00003e340 
+   d5：*main.Dog , &{多多 棕色 1 巴哥⽝犬} , 0xc00003e340 
+   d5修改后= &{多多 金色 1 金毛}
+   d4= &{多多 金色 1 金毛}
+   ------------------------
+   ```
+
+##### （五）匿名结构体和匿名字段
+
+1. 匿名结构体
+
+   （1）概念
+
+   - 名义名字的结构体。无需通过type关键字定义就可以直接使用
+
+   - 在创建匿名结构体时，同时要创建对象
+
+   - 匿名结构体由结构体定义和键值对初始化两部分组成。
+
+   - 语法格式
+
+     变量名 :=struct {
+
+     ​	// 定义成员属性
+
+     }{ // 初始化成员属性  }
+
+     
+
+   （2）示例代码
+
+   ```go
+   func main() {
+   	// 匿名函数
+   	res := func(a, b float64) float64 {
+   		return math.Pow(a, b)
+   	}(2, 3)
+   
+   	fmt.Println(res)
+   
+   	// 匿名结构体
+   	addr := struct {
+   		province, city string
+   	}{"陕西省", "西安市"}
+   	fmt.Println(addr)
+   
+   	cat := struct {
+   		name, color string
+   		age         int8
+   	}{
+   		name:  "喵米",
+   		color: "black",
+   		age:   2,
+   	}
+   	fmt.Println(cat)
+   }
+   
+   ```
+
+2. 结构体的匿名字段
+
+   （1）概念
+
+   - 结构体中的字段没有名字，只包含一个没有字段名的类型。这些字段被称为匿名字段
+   - 如果字段没有名字，那么默认使用类型作为字段名
+   - 注意：同一个类型只能写一个
+   - 结构体嵌套中采用匿名结构体字段可以模拟继承关系
+
+   （2）示例代码
+
+   ```go
+   type User struct {
+   	string
+   	byte
+   	int8
+   	float64
+   }
+   
+   func main() {
+   	// 实例化结构体
+   	user :=User{"andy",'f',22,177.2}
+   	fmt.Println(user)
+   
+   	// 如果想依次获取姓名、年龄、性别、身高，可以这样写：
+   	fmt.Printf("姓名：%s,性别：%c,年龄：%d,身高：%.2f",user.string,user.byte,user.int8,user.float64)
+   }
+   
+   // 输出结果
+   {andy 102 22 177.2}
+   姓名：andy,性别：f,年龄：22,身高：177.20
+   ```
+
+##### （六）结构体嵌套
+
+1. 概念
+   - 将一个结构体作为另一个结构体的属性（字段），这种结构就是结构体嵌套
+   - 结构体嵌套可以模拟对象中的两种关系
+     - 聚合关系：一个类作为另一个类的属性
+     - 继承关系：一个类作为另一个类的子类。子类和父类
+2. 示例代码
+   - 结构体嵌套模拟聚合关系
+
+```go
+type Address struct {
+	province, city string
+}
+
+type Person struct {
+	name string
+	age  int
+	addr Address
+}
+
+func main() {
+	// 模拟对象之间的聚合关系
+	p := Person{}
+	p.name = "Andy"
+	p.age = 23
+
+	// 赋值方式1
+	addr := Address{}
+	addr.province = "陕西"
+	addr.city = "西安"
+	p.addr = addr
+	fmt.Println(p)
+	fmt.Println("姓名:", p.name)
+	fmt.Println("年年龄:", p.age)
+	fmt.Println("省:", p.addr.province)
+	fmt.Println("市:", p.addr.city)
+	fmt.Println("---------------------")
+
+	// 修改Person对象的数据，是否影响Address对象？
+	p.addr.city = "咸阳市"
+	fmt.Println("姓名:", p.name)
+	fmt.Println("年年龄:", p.age)
+	fmt.Println("省:", p.addr.province)
+	fmt.Println("市:", p.addr.city)
+	fmt.Println("---------------------")
+	fmt.Println("市:", addr.city) // 没有影响
+
+	// 修改 Address 对象的数据，是否影响 Person 对象？
+	addr.city = "彬州市"
+	fmt.Println("姓名:", p.name)
+	fmt.Println("年龄:", p.age)
+	fmt.Println("省:", p.addr.province)
+	fmt.Println("市:", p.addr.city)// 没有影响
+	fmt.Println("---------------------")
+
+	// 赋值方式2：
+	p.addr = Address{
+		province: "陕西省",
+		city: "西安市",
+	}
+
+	fmt.Println(p)
+	fmt.Println("姓名:", p.name)
+	fmt.Println("年年龄:", p.age)
+	fmt.Println("省:", p.addr.province)
+	fmt.Println("市:", p.addr.city)
+	fmt.Println("---------------------")
+
+}
+```
+
+（2）结构体嵌套模拟继承关系
+
+- 继承是传统面向对象编程中三大特征之一。用于描述两个类之间的关系。一个类（子类、派生类）继承于另一个类（父类、超类）
+
+- 子类可以有自己的属性和方法，也可以重写父类已有的方法
+
+- 子类可以直接访问父类所有的属性和方法
+
+- <font color="red">提升字段</font>
+
+  - 在结构体中属于匿名结构体的字段称为提升字段，因为它们可以被访问，就好像它们属于用用匿名结构字段的结构一样。
+  - 换句话说，父类中的字段就是提升字段
+
+- 继承的意义：
+
+  - 扩展类的功能
+  - 避免重复代码
+
+- 采用匿名字段的形式就是模拟继承关系。而模拟聚合关系时一定要采用有名的结构体作为字段。
+
+- 示例代码
+
+  ```go
+  package main
+  
+  import "fmt"
+  
+  type Person struct {
+  	Name string
+  	Age int
+  	Sex string
+  }
+  
+  type Student struct {
+  	Person // 采用匿名结构体字段模拟继承关系
+  	SchoolName string
+  }
+  
+  func main() {
+  	// 1. 初始化Person
+  	p1 :=Person{"Andy",24,"male"}
+  	fmt.Println(p1)
+  	fmt.Printf("p1: %T , %+v \n", p1, p1)
+  	fmt.Println("----------------------")
+  
+  	// 2. 初始化Student
+  	// 写法1：
+  	s1 :=Student{p1,"西安交大"}
+  	fmt.Println(s1)
+  	fmt.Printf("s1: %T , %+v \n", s1, s1)
+  	fmt.Println("----------------------")
+  
+  	// 写法2：
+  	s2 :=Student{Person{"Cherry",26,"female"},"港大"}
+  	fmt.Println(s2)
+  	fmt.Printf("s2: %T , %+v \n", s2, s2)
+  	fmt.Println("----------------------")
+  
+  	// 写法 3 ：
+  	s3 := Student{Person: Person{
+  		Name: "zwt",
+  		Age: 19,
+  		Sex: "男",
+  	},
+  		SchoolName: "头大",
+  	}
+  	fmt.Println(s3)
+  	fmt.Printf("s3: %T , %+v \n", s3, s3)
+  	fmt.Println("----------------------")
+  
+  	// 写法 4 ：
+  	s4 := Student{}
+  	s4.Name = "Jerry"
+  	s4.Sex = "男"
+  	s4.Age = 12
+  	s4.SchoolName = "耳朵大"
+  	fmt.Println(s4)
+  	fmt.Printf("s4: %T , %+v \n", s4, s4)
+  	fmt.Println("----------------------")
+  }
+  ```
+
+  
+
+#### 十二、方法
+
+##### （一）方法的语法格式
+
+```go
+func (接受者变量 接受者类型) 方法名(参数列表) （返回值列表）{
+    // 方法体
+}
+```
+
+示例代码
+
+```go
+type Employee struct {
+	name, currency string
+	salary         int
+}
+
+func main() {
+	emp1 := Employee{
+		name:     "Andy Wang",
+		salary:   2000,
+		currency: "$",
+	}
+	// 调⽤用⽅方法
+	emp1.displaySalary()
+	// 调⽤用函数
+	displaySalary(emp1)
+}
+
+//displaySalary () ⽅方法，接受者类型为 Employee
+func (e Employee) displaySalary() {
+	fmt.Printf("员⼯工姓名：%s ，薪资： %s%d \n", e.name, e.currency, e.salary)
+}
+
+//displaySalary () 函数，参数为 Employee 类型对象
+func displaySalary(e Employee) {
+	fmt.Printf("员⼯工姓名：%s ，薪资： %s%d \n", e.name, e.currency, e.salary)
+}
+```
+
+##### （二）指针作为接受者
+
+1. 若接受者不是指针，实际只是获取了一个copy，而不能真正改变接受者中原来的数据
+
+   ```go
+   type Rectangle struct {
+   	width, height float64
+   }
+   
+   func main() {
+   	r1 := Rectangle{5, 8}
+   	r2 := r1
+   	// 打印内存地址
+   	fmt.Printf("r1的地址：%p \n", &r1)
+   	fmt.Printf("r2的地址：%p \n", &r2)
+   	r1.setVal()
+   	fmt.Println("r1.height=", r1.height)
+   	fmt.Println("r2.height=", r2.height)
+   	fmt.Println("--------------------")
+   	r1.setVal2()
+   	fmt.Println("r1.height=", r1.height)
+   	fmt.Println("r2.height=", r2.height)
+   }
+   func (r Rectangle) setVal() {
+   	fmt.Printf("setVal()⽅方法中r的地址：%p \n", &r)
+   	r.height = 10
+   }
+   func (r *Rectangle) setVal2() {
+   	fmt.Printf("setVal2()⽅方法中r的地址：%p \n", r)
+   	r.height = 20
+   }
+   
+   // 输出结果
+   r1的地址：0xc00000a0d0 
+   r2的地址：0xc00000a0e0 
+   setVal()⽅方法中r的地址：0xc00000a110 
+   r1.height= 8
+   r2.height= 8
+   --------------------
+   setVal2()⽅方法中r的地址：0xc00000a0d0 
+   r1.height= 20
+   r2.height= 8
+   ```
+
+   ##### （三）method继承
+
+   1. method 是可以继承的，如果匿名字段实现了一个method，那么包含这个匿名字段的struct也能调用该匿名结构体中的method
+
+      示例代码
+
+      ```go
+      type Human struct {
+      	name, phone string
+      	age         int
+      }
+      type Student struct {
+      	Human  // 匿匿名字段
+      	school string
+      }
+      type Employee struct {
+      	Human   // 匿匿名字段
+      	company string
+      }
+      
+      func main() {
+      	s1 := Student{Human{"Andy", "15012345678", 13}, "港大"}
+      	e1 := Employee{Human{"Cherry", "17812345678", 35}, "交大"}
+      	s1.SayHi()
+      	e1.SayHi()
+      }
+      func (h *Human) SayHi() {
+      	fmt.Printf("大家好!我是 %s ，我%d岁，我的联系⽅方式是：%s\n", h.name, h.age,
+      		h.phone)
+      }
+      
+      // 输出结果
+      大家好!我是 Andy ，我13岁，我的联系⽅方式是：15012345678
+      大家好!我是 Cherry ，我35岁，我的联系⽅方式是：17812345678
+      ```
+
+      ##### （三）method重写
+
+      1. 方法是可以继承和重写的。存在继承关系时，按照就近原则进行调用
+
+      2. 示例代码
+
+         ```go
+         type Human struct {
+         	name, phone string
+         	age         int
+         }
+         type Student struct {
+         	Human  // 匿匿名字段
+         	school string
+         }
+         type Employee struct {
+         	Human   // 匿匿名字段
+         	company string
+         }
+         
+         func main() {
+         	s1 := Student{Human{"zwt", "15012345678", 13}, "交大"}
+         	e1 := Employee{Human{"cy", "17812345678", 35}, "人大"}
+         	s1.SayHi()
+         	e1.SayHi()
+         }
+         func (h *Human) SayHi() {
+         	fmt.Printf("大家好! 我是 %s ，我%d岁，我的联系方式是：%s\n", h.name, h.age,
+         		h.phone)
+         }
+         
+         //Student 的 method 重写 Human 的 method
+         func (s *Student) SayHi() {
+         	fmt.Printf("大家好! 我是 %s ，我%d岁，我在%s上学，我的联系方式是：%s\n", s.name,
+         		s.age, s.school, s.phone)
+         }
+         
+         //Employee 的 method 重写 Human 的 method
+         func (e *Employee) SayHi() {
+         	fmt.Printf("大家好! 我是 %s ，我%d岁，我在%s工作，我的联系方式是：%s\n", e.name,
+         		e.age, e.company, e.phone)
+         }
+         
+         // 输出结果
+         大家好! 我是 zwt ，我13岁，我在交大上学，我的联系方式是：15012345678
+         大家好! 我是 cy ，我35岁，我在人大工作，我的联系方式是：17812345678
+         ```
+
+         
+
+#### 十三 、并发编程goroutine
+
+##### （一）什么是Goroutine
+
+1. 在执行多任务时，为了保证每个任务能及时被分配到CPU上运行处理，同时避免多个任务频繁地在线程间切换执行而损失效率，常使用协程池；但是如果面对随时随地可能发送的并发和线程处理需求，线程池不是非常直观和方便；
+2. 使用者分配足够多的任务，系统能自动帮助使用者把任务分配到CPU上，让这些任务尽量并发运行。这种机制在Go语言中被称为Goroutine。Goroutine类似于线程，Goroutine由Go程序运行runtime调度和管理，Go程序会智能的将Goroutine中的任务合理的分配给每个CPU。
+3. Go程序从main包的main()函数开始，在程序启动时，Go程序会为main() 函数创建一个默认的Goroutine
+
+##### （二）Goroutine 在线程上的优势
+
+1. Go中使用Goroutine 来实现并发concurrently
+2. Goroutine 是与其它函数或方法同时运行的函数或方法
+3. Goroutine 在线程上的优势
+   - 与线程相比，Goroutine 成本很小。他们只是堆栈大小的几个kb，堆栈可以根据应用程序的需要增长和收缩，而在线程的情况下，堆栈大小必须指定并且是固定。由于创建Goroutine的成本很小。因此，Go应用程序可以并发运行数千个Goroutine
+   - 当时用Goroutine 访问共享内存时，通过设计的通道可以防止竞态条件发生。通道可以被认为是Goroutine通信的管道
+
+##### （三）使用普通函数创建goroutine
+
+1. 在函数或方法调用前面加上go关键字，将会同时运行一个新的goroutine
+   - 使用go关键字创建goroutine时，被调用的函数往往没有返回值，如果有返回值也会被忽略
+   - 如果需要在goroutine中返回数据，必须使用通道channel，通过通道channel把数据从goroutine中作为返回值传出
+2. 示例代码1：
+
+```go
+func main() {
+	go hello()
+	//time.Sleep(1*time.Second)
+	fmt.Println("main function")
+}
+
+func hello()  {
+	fmt.Println("Hello golang goroutine")
+}
+
+// 运行结果
+main function
+```
+
+3. 代码分析
+   - Go程序执行的过程是：创建和启动goroutine，初始化操作，执行main() 函数，当main() 函数结束，主goroutine随之结束，程序结束。
+   - 被启动的goroutine叫做子goroutine
+   - 如果main 的goroutine终止了，程序将被终止，而其他Goroutine将不在运行。换句话说，所有goroutine在main（）函数结束时会一同结束。
+4. 修改后的代码
+
+```go
+func main() {
+	go hello()
+	time.Sleep(1*time.Second)
+	fmt.Println("main function")
+}
+
+func hello()  {
+	fmt.Println("Hello golang goroutine")
+}
+
+// 运行结果
+Hello golang goroutine
+main function
+```
+
+- 在上面的程序中，调用time.sleep()方法，它会在执行过程中休眠。在这种情况下，main的goroutine被用来休眠1s。现在调用go hello() 有足够的时间在main Goroutine终止之前执行。这个程序首先打印Hello golang goroutine，等待1s，然后打印main函数
+
+5. 示例代码2
+
+```go
+func main() {
+	go running()
+	var input string
+	fmt.Scanln(&input)
+}
+
+func running() {
+	var times int
+	for {
+		times++
+		fmt.Println("tick", times)
+		time.Sleep(time.Second)
+	}
+}
+```
+
+- 程序运行效果，控制台不断输出tick，同时还可以接收用户输入，两个环节同时运行。
+- 该案例中，go程序在启动时，运行是runtime默认为main()函数创建一个goroutine。在main() 函数的goroutine执行到go running()语句时，归属于running()函数的goroutine被创建，running()函数开始自己的goroutine中执行。
+- 此时，main() 函数继续执行，两个goroutine通过Go程序的调度机制同时运行
+
+##### （四）调整并发的运行性能Gomaxprocs
+
+1. 在Go程序运行时runtime实现了一个小型的任务调度器。这套调度器的工作原理类似于操作系统调度线程，Go程序调度器可以高效的将CPU资源分配给每一个任务。
+
+   传统逻辑中，开发需要维护线程池中的线程与CPU核心数量的对应关系。在Go语言中可以通过runtime.GOMAXPROCS()函数做到。
+
+   语法为：runtime.GOMAXPROCS(逻辑CPU数量)
+
+2. 逻辑CPU数量有如下几种数值：
+
+   - <1，不修改任何数值
+   - =1，单核执行
+   - `>1` 多核并发执行
+
+   Go1.5 版本之前，默认使用单核执行。Go1.5版本开始，默认执行：runtime.GOMAXPROCOS(逻辑CPU数量)，让代码并发执行，最大效率地利用CPU。
+
+#### 十四、并发编程channel
+
+多个goroutine间通信的通道channel
+
+##### （一）通道的概述
+
+1. 使用通道的意义
+   - 单纯的将函数并发执行没有意义。函数与函数间需要交换数据才能体现出并发执行的意义。
+   - 虽然可以使用共享内存进行数据交换，但是共享内存在不同goroutine中容易发生竞态问题，必须使用互斥对内存进行枷锁，所以造成性能问题。
+   - Go语言中提倡使用通道channel的方式代替共享内存。也就是说，Go语言中主张，应该通过数据传递来实现共享内存，而不是通过共享内存来实现消息传递。
+   - 排队的目的是避免拥堵、插队造成的资源使用和交换过程低效问题。多个goroutine为了争抢数据，势必造成低效，使用排队的方式是最高效的，channel就是一种队列结构。
+2. 什么是通道
+   - Go语言中channel是一种特殊的类型。通道像一个传送带或者队列，总是遵循先入先出first in first out 的规则，保证收发数据的顺序。
+   - 通道可以被认为是Goroutine通信的管道。类似于管道中的水从一端到另一端的流动，数据可以从一端发送到另一端，通过通道接收。
+   - 每个通道都有与其相关的类型。该类型是通道允许传输的数据类型。（通道的零值为nil）nil通道没有任何用处，因此通道必须使用类似于map和slice的方法来定义。
+
+##### （二）声明通道类型
+
+1. 语法
+
+```go
+var 通道变量 chan 通道类型
+```
+
+2. chan 类型的空值是nil，声明后需要配合使用make才能使用
+
+##### （三）创建通道
+
+1. 通道是引用类型，需要使用make进行创建
+
+   语法： 通道示例： =make(chan 数据类型)
+
+2. 例如：
+
+   ```go
+   ch1 :=make(chan int) // 创建一个整数类型的通道
+   ch2 :=make(chan interface{}) // 创建一个空接口类型的通道，可以存放任意数据
+   
+   type Equip struct{ /* 属性 */ }
+   ch3 :=make(chan *Equip) 
+   ```
+
+##### （四）通道发送数据
+
+1. 使用通道发送数据的格式
+
+   通道发送数据使用特殊的操作符 "<-"，将数据通过通道发送的语法为：channel_v <- value
+
+   - 通道发送的值可以是变量、常量、表达式或者函数返回值等。值的类型必须与ch通道的元素类型一致
+   - 把数据往通道中发送，如果接收方一直没有接收，那么发送操作将继续阻塞。此时所有的goroutine，包括main的goroutine都出于等待状态。
+   - 运行是会提示报错：fatal error：all goroutine are alseep -deadlock!
+
+2. 死锁deadlock
+
+   - 使用通道时要考虑的一个重要因素是死锁
+   - 如果Goroutine在一个通道发送数据，那么预计其他的Goroutine应该接收数据。如果这种情况不发送，那么程序将在运行时出现死锁。
+   - 类似的，如果Goroutine正在等待从通道接收数据，那么另一些Goroutine将会在该通道上写入数据，否则程序会死锁。
+
+3. 示例代码：
+
+```go
+func mian(){
+    // 创建一个空指针型通道
+    ch :=make(chan interface{})
+    // 将0通过通道发送
+    ch <- 0
+    // 发送字符创
+    ch <- "channel"
+}
+```
+
+##### （五）阻塞
+
+1. 一个通道发送和接收数据默认是阻塞的。
+   - 当一个数据被发送到通道时，在发送语句中被阻塞，知道另一个Goroutine 从该通道读取数据。类似的，当从通道读取数据时，读取被阻塞，直到一个Goroutine将数据写入该通道。
+   - 这些通道的特性是帮助Goroutine 有效的进行通信，而无需像使用其他编程语言中非常常见的显式锁或条件变量
+2. 示例代码：
+
+```go
+func main() {
+	var ch1 chan int
+	fmt.Println(ch1)        // nil
+	fmt.Printf("%T\n", ch1) // chan int
+
+	ch1 = make(chan int)
+	fmt.Println(ch1)
+
+	ch2 := make(chan bool)
+
+	go func() {
+		fmt.Println("子goroutine....")
+		data, ok := <-ch1 // 阻塞式，ch1中读取数据
+		time.Sleep(1 * time.Second)
+		fmt.Println("子goroutine从通道中读取到main传来的数据是：", ok, data)
+		ch2 <- true // 向通道中写入数据，表示结束
+
+	}()
+
+	ch1 <-100 // 阻塞式，main goroutine向通道中写入数据
+	<- ch2 // 目的是防止main goroutine先执行完毕后退出。因为如果main的goroutine终止，程序将终止，而其他Goroutine将不再运行
+	fmt.Println("main... over")
+
+}
+
+// 运行结果
+<nil>
+chan int
+0xc0000180c0
+子goroutine....
+子goroutine从通道中读取到main传来的数据是： true 100
+main... over
+```
+
+##### （六）通道接收数据
+
+1. 使用通道接收数据的格式
+
+   通道接收同样使用特殊符号“<-”
+
+   - 通道变量 <- 值
+   - 通道收发操作在不同的两个goroutine间进行
+   - 接收操作将持续阻塞，直到发送方发送数据
+   - 每次接收一个元素
+
+##### （七）通道接收数据的四种写法
+
+1. 阻塞接收数据
+
+   - data :=<-ch
+   - 执行该语句时将会阻塞，直到接收到数据并赋值给data变量
+
+2. 阻塞接收数据的完整写法
+
+   - data,ok := <-ch
+   - data: 表示接收到的数据。未接收到数据时，data为通道类型的零值
+   - ok： 表示是否接收到数据
+   - 通过ok值可以判断当前通道是否关闭
+
+3. 接收任意数据，忽略接收到数据
+
+   - <- ch
+   - 执行该语句是将会阻塞
+   - 其目的不在于接收通道中的数据，而是为了阻塞goroutine
+
+4. 循环接收数据
+
+   - 循环接收数据，需要配合使用关闭通道
+
+   - 借助普通的for循环和for...range 语句循环接收多个元素
+
+   - 遍历通道，遍历的结果就是接收到 的数据，数据类型就是通道的数据类型
+
+   - 普通for循环接收通道数据，需要有break循环的条件；for...range 会自动判断出通道已关闭，而无需通过判断来终止循环
+
+   - 循环接收数据的三种方式
+
+     ```go
+     func main() {
+     	ch1 := make(chan string)
+     	go sendData(ch1)
+     
+     	// 1. 循环接收数据方式1
+     	for {
+     		data := <-ch1
+     		if data == "" {
+     			break
+     		}
+     		fmt.Println("从通道中读取数据方式1：", data)
+     	}
+     
+     	// 2. 循环接收数据方式2
+     	for {
+     		data, ok := <-ch1
+     		if !ok {
+     			break
+     		}
+     		fmt.Println("从通道中读取数据方式2：", data)
+     	}
+     
+     	// 3. 循环接收数据方式3
+     	// for...range 会自动判断通道是否关闭，自动break循环
+     	for ch := range ch1 {
+     		fmt.Println("从通道中读取数据方式3：", ch)
+     	}
+     }
+     
+     func sendData(ch1 chan string) {
+     	for i := 1; i <= 10; i++ {
+     		ch1 <- fmt.Sprintf("发送数据%d\n", i)
+     	}
+     
+     	fmt.Println("发送数据完毕。。。")
+     	// 显示调用close() 实现关闭通道
+     	close(ch1)
+     
+     }
+     ```
+
+     
+
+##### （八）关闭通道
+
+1. 发送方如果数据写入完毕，需要关闭通道，用于通知接收方数据传递完毕。一般都是发送方关闭通道
+
+2. 如何判断一个channel是否已经关闭？可以在读取的时候使用多个返回值的方式。如果返回false，则表示通道已经关闭
+
+3. 如果往关闭的通道中写入数据，会报错：panic: send on closed channel
+
+4. 示例代码：
+
+   ```go
+   func main() {
+   	// 通道关闭后是否可以写入和读取数据呢？
+   	ch1 := make(chan int)
+   	go func() {
+   		ch1 <- 100
+   		ch1 <- 200
+   		close(ch1)
+   		//ch1 <- 10 // 关闭的通道无法写入数据
+   	}()
+   
+   	data,ok :=<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   	data,ok =<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   	data,ok =<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   	data,ok =<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   
+   	data,ok =<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   }
+   
+   // 运行结果
+   main读取数据： 100 true
+   main读取数据： 200 true
+   main读取数据： 0 false
+   main读取数据： 0 false
+   main读取数据： 0 false
+   ```
+
+   修改代码：
+
+   ```go
+   func main() {
+   	// 通道关闭后是否可以写入和读取数据呢？
+   	ch1 := make(chan int)
+   	go func() {
+   		ch1 <- 100
+   		ch1 <- 200
+   		close(ch1)
+   		ch1 <- 10 // 关闭的通道无法写入数据
+   	}()
+   
+   	data,ok :=<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   	data,ok =<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   	data,ok =<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   	data,ok =<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   
+   	data,ok =<- ch1
+   	fmt.Println("main读取数据：",data,ok)
+   
+   }
+   
+   // 运行结果
+   main读取数据： 100 true
+   main读取数据： 200 true
+   panic: send on closed channel
+   
+   goroutine 6 [running]:
+   main.main.func1(0xc0000180c0)
+   	E:/lnb/go/src/go-study/main.go:12 +0x80
+   created by main.main
+   	E:/lnb/go/src/go-study/main.go:8 +0x74
+   ```
+
+
+
+缓冲通道和定向通道
+
+##### （九）缓冲通道
+
+1. 缓冲通道：自带一块缓冲区，可以暂时存储数据，如果缓冲区满了，那么才会阻塞；
+
+2. 非缓冲通道：默认创建的通道都是非缓冲通道，读写都是即时阻塞
+
+3. 示例代码：
+
+   ```go
+   func main() {
+   	// 1. 非缓冲通道
+   	ch1 := make(chan int)
+   	fmt.Println("非缓冲通道：", len(ch1), cap(ch1)) // 0,0
+   
+   	go func() {
+   		data := <-ch1 // 阻塞
+   		fmt.Println("获取数据： ", data)
+   	}()
+   
+   	ch1 <- 100 // 阻塞
+   	time.Sleep(1 * time.Second)
+   	fmt.Println("写入数据OK -------------")
+   
+   	// 2. 缓冲通道
+   	ch2 := make(chan string, 5)
+   	fmt.Printf("%T\n", ch2)
+   
+   	go sendData(ch2)
+   
+   	for data := range ch2 {
+   		fmt.Println("\t读取数据：", data)
+   	}
+   
+   	// 读取数据完毕
+   	fmt.Println("读取数据完毕")
+   
+   }
+   
+   func sendData(ch chan string) {
+   	for i := 1; i <= 10; i++ {
+   		ch <- fmt.Sprintf("data%d", i)
+   		fmt.Println("写入数据：", i)
+   		fmt.Println(len(ch), cap(ch))
+   	}
+   	close(ch)
+   }
+   ```
+
+4. 缓冲通道模拟生产者和消费者
+
+   ```go
+   func main() {
+   	ch1 := make(chan int, 5)
+   	ch2 := make(chan bool) // 判断结束
+   	rand.Seed(time.Now().UnixNano())
+   	// 写⼊入数据：⽣生产者
+   	go func() {
+   		for i := 1; i <= 20; i++ {
+   			ch1 <- i
+   			fmt.Println("写⼊入数据：", i)
+   			time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
+   		}
+   		close(ch1)
+   	}()
+   	// 读取数据：消费者
+   	go func() {
+   		for data := range ch1 {
+   			fmt.Println("\t1号消费者：", data)
+   			time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
+   		}
+   		ch2 <- true
+   	}()
+   	go func() {
+   		for data := range ch1 { //1
+   			fmt.Println("\t2号消费者：", data)
+   			time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
+   		}
+   		ch2 <- true
+   	}()
+   	<-ch2
+   	fmt.Println("main...over...")
+   }
+   ```
+
+##### （十）定向通道
+
+1. 通道默认都是双向的，即可写入数据，又可读取数据
+
+2. 定向通道：也叫单向通道，只读，或只写
+
+   - 只读： make(<- chan type)，只能读取数据，不能写入数据
+
+     ​			<- chan
+
+   - 只写：make(chan <- type)，只能写入数据，不能读取数据
+
+     ​			chan<- data
+
+3. 创建通道时，采用单向通道，没有意义的。都是双向通道。
+
+   - 将通道作为参数传递的时候使用单向通道
+
+     定义函数，只有写入数据功能，或者只有读取数据功能
+
+4. 定向通道的意义：在语法级别，保证通道的操作安全
+
+5. 示例代码
+
+   ```go
+   func main() {
+   	// 1. 双向通道
+   	ch1 := make(chan string)
+   	go fun1(ch1)
+   
+   	data := <-ch1
+   	fmt.Println("main,接收到数据：", data)
+   	ch1 <- "Go 语言好学么？"
+   	ch1 <- "区块链好学么？"
+   
+   	go fun2(ch1)
+   	go fun3(ch1)
+   
+   	time.Sleep(1 * time.Second)
+   	fmt.Println("main over!")
+   
+   }
+   
+   func fun1(ch1 chan string) {
+   	ch1 <- "我是Andy"
+   	data := <-ch1
+   	data2 := <-ch1
+   	fmt.Println("回应：", data, data2)
+   }
+   
+   // 功能：值写入数据
+   func fun2(ch chan<- string) {
+   	// 只能写入
+   	ch <- "Are U OK？"
+   	//<-ch // Invalid operation: <-ch (receive from send-only type chan<- string)
+   }
+   
+   // 功能：只能读取数据
+   func fun3(ch <-chan string) {
+   	data := <-ch
+   	fmt.Println("只读：", data)
+   	// ch <- "hello" // Invalid operation: ch <- "hello" (send to receive-only type <-chan string)
+   }
+   ```
+
+
+
+##### （十一）select 分支语句
+
+- select 语句类似于switch 语句，但是select会随机执行一个可运行的case。如果没有case可以运行，它将阻塞，知道case可运行
+- 每个case都必须是一个通道
+- 所有channel表达式都会被求值
+- 所有被发送的表达式都会被求值
+- 如果任意某个通道可以进行，它就执行；其他被忽略
+
+1. 执行流程
+
+   - 如果多个case都可以运行，select会随机公平的选出一个执行，其他不会执行
+   - 如果有default子句，则执行语句
+   - 如果没有deafult子句，select将阻塞，直到某个通道可以运行
+   - Go不会重新对channel或值进行求值
+
+2. 示例代码1
+
+   ```go
+   func main() {
+   
+   	ch1 := make(chan int)
+   	ch2 := make(chan int)
+   	go func() {
+   		time.Sleep(1 * time.Second)
+   		ch1 <- 100
+   	}()
+   	go func() {
+   		time.Sleep(1 * time.Second)
+   		ch2 <- 200
+   	}()
+   	select {
+   	case data := <-ch1:
+   		fmt.Println("ch1中读取数据了了:", data)
+   	case data := <-ch2:
+   		fmt.Println("ch2中读取数据了了：", data)
+   	default:
+   		fmt.Println("执⾏行行了了default。。。")
+   	}
+   }
+   
+   // 运行结果
+   执⾏行行了了default。。。
+   
+   ```
+
+   示例代码2：
+
+   ```go
+   func main() {
+   	ch1 := make(chan int)
+   	ch2 := make(chan int)
+   	go func() {
+   		time.Sleep(1 * time.Second)
+   		data := <-ch1
+   		fmt.Println("ch1：", data)
+   	}()
+   	go func() {
+   		time.Sleep(2 * time.Second)
+   		data := <-ch2
+   		fmt.Println("ch2：", data)
+   	}()
+   	select {
+   	case ch1 <- 100: // 阻塞
+   		close(ch1)
+   		fmt.Println("ch1中写⼊入数据。。")
+   	case ch2 <- 200: // 阻塞
+   		close(ch2)
+   		fmt.Println("ch2中写⼊入数据。。")
+   	case <-time.After(2 * time.Second): // 阻塞
+   		fmt.Println("执⾏行行延时通道")
+   		//default:
+   		// fmt.Println ( "default.." )
+   	}
+   	time.Sleep(4 * time.Second)
+   	fmt.Printf("main over ")
+   }
+   
+   // 运行结果
+   ch1： 100
+   ch1中写⼊入数据。。
+   main over 
+   ```
+
+   
+
