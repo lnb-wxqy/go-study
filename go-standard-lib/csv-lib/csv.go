@@ -3,7 +3,7 @@ package csv_lib
 import (
 	"bytes"
 	"fmt"
-	"golang-study/utils"
+	"go-study/utils"
 	"time"
 )
 
